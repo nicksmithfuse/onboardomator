@@ -4,6 +4,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
 # Locally stored username and password hashtag security hashtag we did it
@@ -101,21 +102,6 @@ try:
         ec.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'q-menu')]//div[contains(@class, 'q-item__label')]//span[text()='USA']"))
     )
     usa_option.click()
-
-    # Wait for the "State" dropdown to be present
-    state_dropdown = WebDriverWait(driver, 20).until(
-        ec.presence_of_element_located((By.CSS_SELECTOR, "div[aria-label='Province'] input"))
-    )
-
-    # Populate the "State" field from the CSV
-    for row in reader:
-        if row[0].strip() == "Province" or row[0].strip() == "State":
-            # Get the province/state from the second column
-            state = row[1].strip()
-
-            # Select the province/state from the dropdown
-            state_select = Select(state_dropdown)
-            state_select.select_by_visible_text(state)
 
     # Wait for the user to manually close the browser window
     print("Press Enter to close the browser and exit the script.")
