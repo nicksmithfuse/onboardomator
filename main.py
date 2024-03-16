@@ -51,50 +51,62 @@ try:
     dealership_name_field_interactable = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Dealership Name']"))
     )
-
-    # locate street and city now that the first one is interactable
+    # locate street, city, zip and phone now that the first one is interactable
     street_field = WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Street']"))
     )
     city_field = WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='City']"))
     )
+    phone_field = WebDriverWait(driver, 10).until(
+        ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Phone']"))
+    )
+    # select usa from dropdown here as the zip field needs to generate
+    country_dropdown_icon = WebDriverWait(driver, 20).until(
+        ec.presence_of_element_located((By.CSS_SELECTOR, "i.q-icon.q-select__dropdown-icon"))
+    )
+    # Click the "Country" dropdown icon
+    country_dropdown_icon.click()
+    # Wait for the "USA" option (set by finding it in inspect element but this isn't great) to be present and click it
+    usa_option = WebDriverWait(driver, 20).until(
+        ec.element_to_be_clickable(
+            (By.XPATH, "//div[contains(@class, 'q-menu')]//div[contains(@class, 'q-item__label')]//span[text()='USA']"))
+    )
+    usa_option.click()
 
-    # Open the CSV file and populate the form fields so far
+    # used element to be clickable here as this one generates after USA selected in dropdown
+    zip_field = WebDriverWait(driver, 10).until(
+        ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Zip']"))
+    )
+
+    # opens up the onboarding file, checks fields in the file against fields on the webform and fills them out
     with open('onboarding.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             # Check the .csv file for the field names required to fill out the form
             if row[0].strip() == "Dealer Name":
-                # Get the dealership name from the second column and enter it into the form field
                 dealership_name = row[1].strip()
                 dealership_name_field_interactable.send_keys(dealership_name)
 
             elif row[0].strip() == "Street Address":
-                # Get the street address from the second column and enter it into the form field
                 street_address = row[1].strip()
                 street_field.send_keys(street_address)
 
             elif row[0].strip() == "City":
-                # Get the city name from the second column and enter it into the form field
                 city_name = row[1].strip()
                 city_field.send_keys(city_name)
 
-    # Wait for the "Country" dropdown icon to be present, based off the dropdown icon from inspect element
-    country_dropdown_icon = WebDriverWait(driver, 20).until(
-        ec.presence_of_element_located((By.CSS_SELECTOR, "i.q-icon.q-select__dropdown-icon"))
-    )
+            elif row[0].strip() == "Contact Phone Number (Contact 1)":
+                phone_number = row[1].strip()
+                phone_field.send_keys(phone_number)
 
-    # Click the "Country" dropdown icon
-    country_dropdown_icon.click()
+            elif row[0].strip() == "Zip Code":
+                zip_code = row[1].strip()
+                zip_field.send_keys(zip_code)
 
-    # Wait for the "USA" option (set by finding it in inspect element as well) to be present and click it
-    usa_option = WebDriverWait(driver, 20).until(
-        ec.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'q-menu')]//div[contains(@class, 'q-item__label')]//span[text()='USA']"))
-    )
-    usa_option.click()
 
     # input keeps script from closing out browser. user continues manually from this point.
+    print("press enter to close even though you can't")
     input()
 
 finally:

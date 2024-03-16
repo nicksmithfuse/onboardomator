@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="removed state code, reset to original code where everything works up to the country dropdown selecting USA.">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="updated comments to explain code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -87,12 +87,21 @@
       <option name="project" value="LOCAL" />
       <updated>1710553608249</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="updated comments to explain code">
+      <option name="closed" value="true" />
+      <created>1710554102444</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1710554102444</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit - works up to USA dropdown" />
     <MESSAGE value="removed state code, reset to original code where everything works up to the country dropdown selecting USA." />
-    <option name="LAST_COMMIT_MESSAGE" value="removed state code, reset to original code where everything works up to the country dropdown selecting USA." />
+    <MESSAGE value="updated comments to explain code" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated comments to explain code" />
   </component>
 </project>
