@@ -18,15 +18,15 @@ login_url = "https://portal.mscanapi.com/#/Partner/Login"
 driver.get(login_url)
 
 try:
-    # Wait for the partner ID input field to be visible, and then enter the username variable
+    # Wait for the partner ID input field to be interactable, and then enter the username variable
     partner_id_input = WebDriverWait(driver, 10).until(
-        ec.visibility_of_element_located((By.CSS_SELECTOR, "input[data-v-a178893e]"))
+        ec.element_to_be_clickable((By.CSS_SELECTOR, "input[name='Partner ID']"))
     )
     partner_id_input.send_keys(mscan_username)
 
-    # Wait for the password input field to be visible, and then enter the password variable
+    # Wait for the password input field to be interactable, and then enter the password variable
     password_input = WebDriverWait(driver, 10).until(
-        ec.visibility_of_element_located((By.CSS_SELECTOR, "input[type='password']"))
+        ec.element_to_be_clickable((By.CSS_SELECTOR, "input[name='Password']"))
     )
     password_input.send_keys(mscan_password)
 
