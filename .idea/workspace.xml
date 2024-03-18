@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="State is defined at beginning of script, targeting updated, state is now selected">
-      <change afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onboarding.csv" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +41,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.account_modification.executor": "Run",
+    "Python.functions.executor": "Run",
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -157,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710787903106</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file">
+      <option name="closed" value="true" />
+      <created>1710794641513</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1710794641513</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -169,6 +177,7 @@
     <MESSAGE value="got everything except state dropdown" />
     <MESSAGE value="final final push before state dropdown work session" />
     <MESSAGE value="State is defined at beginning of script, targeting updated, state is now selected" />
-    <option name="LAST_COMMIT_MESSAGE" value="State is defined at beginning of script, targeting updated, state is now selected" />
+    <MESSAGE value="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file" />
   </component>
 </project>

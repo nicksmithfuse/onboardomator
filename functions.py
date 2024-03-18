@@ -1,4 +1,6 @@
 import csv
+import time
+import os
 from tkinter import messagebox
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -42,7 +44,12 @@ def get_dealer_info():
     dealership_state_full = state_map.get(dealership_state_abbr, '')
 
     return dealership_name, dealership_state_abbr, dealership_state_full
-def login(driver, mscan_username, mscan_password):
+
+
+def login(driver):
+    # Locally stored username and password hashtag security hashtag we did it
+    mscan_username = os.getenv("mscanuser")
+    mscan_password = os.getenv("mscanpw")
     try:
         # Wait for the partner ID input field to be CLICKABLE, and then enter the username variable
         partner_id_input = WebDriverWait(driver, 10).until(
@@ -72,18 +79,38 @@ def login(driver, mscan_username, mscan_password):
     except Exception as e:
         print(f"An error occurred during login: {str(e)}")
         return False  # Return False if an exception occurs during login
+
+
 def modify_account(driver, dealership_name):
-    # Wait for the search box to be visible
-    search_box = WebDriverWait(driver, 10).until(
-        ec.visibility_of_element_located(
-            (By.CSS_SELECTOR, "input.dx-texteditor-input[aria-label='Search in the data grid']"))
-    )
+    try:
+        # Wait for the search box to be visible
+        search_box = WebDriverWait(driver, 10).until(
+            ec.visibility_of_element_located(
+                (By.CSS_SELECTOR, "input.dx-texteditor-input[aria-label='Search in the data grid']"))
+        )
 
-    # Enter the dealership name into the search box and press Enter
-    search_box.send_keys(dealership_name)
-    search_box.send_keys(Keys.ENTER)
+        # Enter the dealership name into the search box and press Enter
+        search_box.send_keys(dealership_name)
+        search_box.send_keys(Keys.ENTER)
 
-    input()
+        time.sleep(3)
+
+        # Wait for the <tr> tag with the specified class to be clickable
+        clickable_row = WebDriverWait(driver, 10).until(
+            ec.element_to_be_clickable(
+                (By.CSS_SELECTOR, "tr.dx-row.dx-data-row.dx-column-lines"))
+        )
+
+        # Click on the clickable <tr> tag
+        clickable_row.click()
+
+        input()
+
+        return True  # Return True if the modification process is successful
+
+    except Exception as e:
+        print(f"An error occurred during account modification: {str(e)}")
+        return False  # Return False if an exception occurs during account modification
 def create_account(driver, dealership_state_abbr, dealership_state_full):
     # Wait for the "Create an Account" button to be clickable, and then click it
     create_account_button = WebDriverWait(driver, 10).until(
@@ -223,4 +250,25 @@ def create_account(driver, dealership_state_abbr, dealership_state_full):
 
     # Keep the browser open for further adjustments
     input("Press Enter to close the browser...")
+def automator(driver, dealership_state_abbr, dealership_state_full, dealership_name):
+    user_choice = messagebox.askquestion("Account Action", "Are you creating a NEW account?")
+    if user_choice == "yes":
+        print("User selected: Create an Account")
+        create_account(driver, dealership_state_abbr, dealership_state_full)
+    else:
+        # User selected "No" (Modify Settings)
+        modify_settings = messagebox.askyesno("Modify Settings", "Do you want to modify the account settings?")
+
+        if modify_settings:
+            print("User selected: Modify Settings")
+            modify_account(driver, dealership_name)
+            if modify_account(driver, dealership_name):
+                print("Account modification successful!")
+                input()
+            else:
+                print("Account modification failed.")
+        else:
+            # User cancelled modifying the account settings
+            print("User cancelled modifying the account settings")
+            input()
 
