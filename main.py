@@ -1,5 +1,6 @@
 import csv
 import os
+from tkinter import messagebox
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -11,14 +12,30 @@ from selenium.webdriver.chrome.options import Options
 mscan_username = os.getenv("mscanuser")
 mscan_password = os.getenv("mscanpw")
 
-# get state out of the onboarding file
-dealership_state = ""
+state_map = {
+    'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
+    'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
+    'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa',
+    'KS': 'Kansas', 'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+    'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri',
+    'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire', 'NJ': 'New Jersey',
+    'NM': 'New Mexico', 'NY': 'New York', 'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio',
+    'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+    'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
+    'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming'
+}
+
+# Read the "State" value from the "onboarding.csv" file
+dealership_state_abbr = ""
 with open('onboarding.csv', 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0].strip() == "State":
-            dealership_state = row[1].strip()
+            dealership_state_abbr = row[1].strip()
             break
+
+# Get the full state name based on the abbreviation
+dealership_state_full = state_map.get(dealership_state_abbr, '')
 
 # Create a new instance of the shiny and Chrome driver, maximized since there was an overlay issue, then navigate to
 # the partner login page
@@ -163,12 +180,33 @@ try:
 
     # Find the desired state option based on the value from the CSV file and click on it
     for option in state_options:
-        if option.text == dealership_state:
+        if option.text == dealership_state_abbr:
             option.click()
             break
-        # input keeps script from closing out browser. user continues manually from this point.
-    print("press enter to close even though you can't")
-    input()
+
+    # Find the checkbox next to the state subscription item matching the dealership's full state name
+    state_subscription_checkbox = WebDriverWait(driver, 20).until(
+        ec.element_to_be_clickable((
+            By.XPATH,
+            f"//div[@class='dx-item dx-list-item']"
+            f"[contains(.//div[@class='dx-item-content dx-list-item-content'], '{dealership_state_full}')]"
+            f"//div[@class='dx-checkbox-container']"
+        ))
+    )
+
+    # Click on the checkbox to select the state subscription
+    state_subscription_checkbox.click()
+
+    # Display a pop-up message to the user
+    messagebox.showinfo("Account Creation",
+                        "Please fill out the OEM field and review all information before clicking 'Save'.")
+
+    # Keep the browser open for further adjustments
+    input("Press Enter to close the browser...")
+
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
+    messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
 finally:
     # Close the browser
