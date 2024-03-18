@@ -11,16 +11,16 @@ from selenium.webdriver.chrome.options import Options
 mscan_username = os.getenv("mscanuser")
 mscan_password = os.getenv("mscanpw")
 
-# Create a new instance of the shiny and Chrome driver
+# Create a new instance of the shiny and Chrome driver, maximized since there was an overlay issue, then navigate to
+# the partner login page
 chrome_options = Options()
 chrome_options.add_argument("--start-maximized")
-
 driver = webdriver.Chrome(options=chrome_options)
-
-# Navigate to the partner login page in chrome driver
 login_url = "https://portal.mscanapi.com/#/Partner/Login"
 driver.get(login_url)
 
+# code for logging in, then going to the create an account page, and then filling everything out up until the state
+# dropdown
 try:
     # Wait for the partner ID input field to be CLICKABLE, and then enter the username variable
     partner_id_input = WebDriverWait(driver, 10).until(
@@ -40,7 +40,7 @@ try:
     )
     login_button.click()
 
-    # Wait for the loading backdrop to disappear since this errored out twice
+    # script is too fast add this everywhere it breaks
     WebDriverWait(driver, 10).until_not(
         ec.presence_of_element_located((By.CSS_SELECTOR, "div.q-loading__backdrop"))
     )
@@ -51,7 +51,7 @@ try:
     )
     create_account_button.click()
 
-    # Wait for the loading backdrop to disappear since this errored out twice and thrice again
+    # script is too fast add this everywhere it breaks
     WebDriverWait(driver, 10).until_not(
         ec.presence_of_element_located((By.CSS_SELECTOR, "div.q-loading__backdrop"))
     )
@@ -60,7 +60,7 @@ try:
     dealership_name_field_interactable = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Dealership Name']"))
     )
-    # LOCATE street, city, zip and phone now that the first one is interactable
+    # LOCATE street, city, zip and phone now that the first field is interactable
     street_field = WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Street']"))
     )
@@ -70,12 +70,12 @@ try:
     phone_field = WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Phone']"))
     )
-    # select usa from dropdown here as the zip field needs to generate
+
+    # select usa from dropdown here as the zip field needs to generate after that field is selected
     country_dropdown_icon = WebDriverWait(driver, 20).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "i.q-icon.q-select__dropdown-icon"))
     )
-
-    # Select USA from the country dropdown
+    # finds and opens up the country drop down, finds USA and clicks on it
     country_dropdown = WebDriverWait(driver, 20).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Country']"))
     )
@@ -86,7 +86,7 @@ try:
     )
     usa_option.click()
 
-        # # Wait for the state dropdown element to be present after selecting USA
+    # Wait for the state dropdown element to be present after selecting USA
     # state_dropdown = WebDriverWait(driver, 20).until(
     #     ec.presence_of_element_located(
     #         (By.CSS_SELECTOR, "div.q-field.q-field--outlined.q-select.q-field--dense.q-field--float"))
@@ -119,13 +119,12 @@ try:
     )
     beta_option.click()
 
-    # Wait for the calendar field to be interactable and click it
+    # Wait for the calendar field to be interactable and click it, waits for the ok button to show on the calendar
+    # and clicks that as well, no date adjustment needed here as it always selects the correct date
     calendar_field = WebDriverWait(driver, 20).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "i.q-icon.text-green.notranslate.material-icons.cursor-pointer"))
     )
     calendar_field.click()
-
-    # Wait for the "OK" button to be clickable and click it
     ok_button = WebDriverWait(driver, 20).until(
         ec.element_to_be_clickable((By.XPATH, "//span[contains(@class, 'block') and text()='OK']"))
     )
@@ -136,11 +135,10 @@ try:
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Zip']"))
     )
 
-    # opens up the onboarding file, checks fields in the file against fields on the webform and fills them out
+    # opens up the onboarding file, checks fields in the file against fields on the webform and fills them in
     with open('onboarding.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
-            # Check the .csv file for the field names required to fill out the form
             if row[0].strip() == "Dealer Name":
                 dealership_name = row[1].strip()
                 dealership_name_field_interactable.send_keys(dealership_name)

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="bug fixes - adjusted targeting for partner ID and login fields">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="got everything except state dropdown">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -111,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710761673942</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="got everything except state dropdown">
+      <option name="closed" value="true" />
+      <created>1710765898830</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1710765898830</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -120,6 +128,7 @@
     <MESSAGE value="updated comments to explain code" />
     <MESSAGE value="form fills out to state dropdown." />
     <MESSAGE value="bug fixes - adjusted targeting for partner ID and login fields" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug fixes - adjusted targeting for partner ID and login fields" />
+    <MESSAGE value="got everything except state dropdown" />
+    <option name="LAST_COMMIT_MESSAGE" value="got everything except state dropdown" />
   </component>
 </project>
