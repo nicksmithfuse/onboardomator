@@ -11,6 +11,15 @@ from selenium.webdriver.chrome.options import Options
 mscan_username = os.getenv("mscanuser")
 mscan_password = os.getenv("mscanpw")
 
+# get state out of the onboarding file
+dealership_state = ""
+with open('onboarding.csv', 'r') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        if row[0].strip() == "State":
+            dealership_state = row[1].strip()
+            break
+
 # Create a new instance of the shiny and Chrome driver, maximized since there was an overlay issue, then navigate to
 # the partner login page
 chrome_options = Options()
@@ -86,27 +95,6 @@ try:
     )
     usa_option.click()
 
-    # Wait for the state dropdown element to be present after selecting USA
-    # state_dropdown = WebDriverWait(driver, 20).until(
-    #     ec.presence_of_element_located(
-    #         (By.CSS_SELECTOR, "div.q-field.q-field--outlined.q-select.q-field--dense.q-field--float"))
-    # )
-    #
-    # # Click on the state dropdown to open it
-    # state_dropdown.click()
-    #
-    # # Wait for the state options to be visible and interactable
-    # state_options = WebDriverWait(driver, 20).until(
-    #     ec.presence_of_all_elements_located((By.CSS_SELECTOR, "div.q-item__label"))
-    # )
-    #
-    # # Find the desired state option based on the value from the CSV file and click on it
-    # desired_state = "CA"  # Replace with the actual state value from the CSV file
-    # for option in state_options:
-    #     if option.text == desired_state:
-    #         option.click()
-    #         break
-
     # Target the "API Status" dropdown and select "Beta"
     api_status_dropdown = WebDriverWait(driver, 20).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='API Status']"))
@@ -159,10 +147,28 @@ try:
                 zip_code = row[1].strip()
                 zip_field.send_keys(zip_code)
 
+    # Wait for the state dropdown element to be present after selecting USA
+    state_dropdown = WebDriverWait(driver, 20).until(
+        ec.presence_of_element_located(
+            (By.CSS_SELECTOR, "input[aria-label='State']"))
+    )
 
+    # Click on the state dropdown to open it
+    state_dropdown.click()
+
+    # Wait for the state options to be visible and interactable
+    state_options = WebDriverWait(driver, 20).until(
+        ec.presence_of_all_elements_located((By.CSS_SELECTOR, "div.q-item__label span"))
+    )
+
+    # Find the desired state option based on the value from the CSV file and click on it
+    for option in state_options:
+        if option.text == dealership_state:
+            option.click()
+            break
         # input keeps script from closing out browser. user continues manually from this point.
-        print("press enter to close even though you can't")
-        input()
+    print("press enter to close even though you can't")
+    input()
 
 finally:
     # Close the browser
