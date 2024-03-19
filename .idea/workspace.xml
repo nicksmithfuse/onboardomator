@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding.csv" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,18 +39,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.account_modification.executor": "Run",
-    "Python.functions.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.account_modification.executor&quot;: &quot;Run&quot;,
+    &quot;Python.functions.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\rhann\PycharmProjects\mscanautomator\mscanFunctions" />
       <recent name="C:\Users\rhann\PycharmProjects\mscanautomator" />
     </key>
   </component>
@@ -177,6 +179,7 @@
     <MESSAGE value="got everything except state dropdown" />
     <MESSAGE value="final final push before state dropdown work session" />
     <MESSAGE value="State is defined at beginning of script, targeting updated, state is now selected" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/master'" />
     <MESSAGE value="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file" />
     <option name="LAST_COMMIT_MESSAGE" value="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file" />
   </component>

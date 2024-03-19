@@ -43,6 +43,6 @@ Minimum Discount Amount to Display,-
 Default Mileage for Lease Specials,10000
 Lease Special Markups,0.0004
 Finance Special Markups,0
-Show Programs with Lower Max Rate,No
+Show Programs with Lower Max Rate,Yes
 Models to Exclude from Specials,Golf R
 Finance Lenders,Unpublished
