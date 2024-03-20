@@ -8,14 +8,16 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
 def get_dealer_info():
-    # Read the "Dealer Name" value from the "onboarding.csv" file
+    # Read the dealership information from the "onboarding.csv" file
     dealership_name = ""
-    with open('onboarding.csv', 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            if row[0].strip() == "Dealer Name":
-                dealership_name = row[1].strip()
-                break
+    dealership_state_abbr = ""
+    dealership_state_full = ""
+    show_lower_max_rate = False
+    include_registration_fees = False
+    zip_code = ""
+    street_address = ""
+    city_name = ""
+    phone_number = ""
 
     state_map = {
         'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
@@ -30,37 +32,29 @@ def get_dealer_info():
         'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming'
     }
 
-    # Read the "State" value from the "onboarding.csv" file
-    dealership_state_abbr = ""
     with open('onboarding.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
-            if row[0].strip() == "State":
+            if row[0].strip() == "Dealer Name":
+                dealership_name = row[1].strip()
+            elif row[0].strip() == "State":
                 dealership_state_abbr = row[1].strip()
-                break
-
-    # Get the full state name based on the abbreviation
-    dealership_state_full = state_map.get(dealership_state_abbr, '')
-
-    # Read the settings values from the "onboarding.csv" file
-    show_lower_max_rate = ""
-    include_registration_fees = ""
-    zip_code = ""
-    with open('onboarding.csv', 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            if row[0].strip() == "Show Programs with Lower Max Rate":
+                dealership_state_full = state_map.get(dealership_state_abbr, '')
+            elif row[0].strip() == "Show Programs with Lower Max Rate":
                 show_lower_max_rate = row[1].strip().lower() == "yes"
-                break
-            if row[0].strip() == "Include Registration Fees in Payment":
+            elif row[0].strip() == "Include Registration Fees in Payment":
                 include_registration_fees = row[1].strip().lower() == "yes"
-                break
-            if row[0].strip() == "Zip Code":
+            elif row[0].strip() == "Zip Code":
                 zip_code = row[1].strip()
-                break
+            elif row[0].strip() == "Street Address":
+                street_address = row[1].strip()
+            elif row[0].strip() == "City":
+                city_name = row[1].strip()
+            elif row[0].strip() == "Contact Phone Number (Contact 1)":
+                phone_number = row[1].strip()
 
     return (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
-            include_registration_fees, zip_code)
+            include_registration_fees, zip_code, street_address, city_name, phone_number)
 
 def login(driver):
     # logs into mscan
@@ -172,7 +166,7 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
 
 
 def create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
-                   include_registration_fees, zip_code):
+                   include_registration_fees, zip_code, street_address, city_name, phone_number):
     # wait for the "Create an Account" button to be clickable, and then click it
     create_account_button = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "button.q-btn--outline.text-primary"))
@@ -308,17 +302,19 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     print("Navigated to the homepage")
 
     # Call the automator function to repeat the process
-    automator(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
-              include_registration_fees, zip_code)
+    automator(driver)
 
 
-def automator(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
-              include_registration_fees, zip_code):
+def automator(driver):
+    # Get the dealership information from the CSV file
+    (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
+     include_registration_fees, zip_code, street_address, city_name, phone_number) = get_dealer_info()
+
     user_choice = messagebox.askquestion(f"Account Action", f"Are you creating a NEW account for {dealership_name}?")
     if user_choice == "yes":
         print("User selected: Create an Account")
         create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
-          include_registration_fees, zip_code)
+                       include_registration_fees, zip_code, street_address, city_name, phone_number)
     else:
         modify_settings = messagebox.askyesno("Modify Settings", f"Do you want to modify the account "
                                                                  f"settings for {dealership_name}?")

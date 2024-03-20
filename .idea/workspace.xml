@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="initial commit to work github account">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -23,6 +23,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="1b96eabb-a52e-42bd-b0ce-8dda6984ab0a" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -166,7 +169,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710794641513</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="initial commit to work github account">
+      <option name="closed" value="true" />
+      <created>1710947297572</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1710947297572</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -180,6 +191,7 @@
     <MESSAGE value="State is defined at beginning of script, targeting updated, state is now selected" />
     <MESSAGE value="Merge remote-tracking branch 'origin/master'" />
     <MESSAGE value="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file" />
+    <MESSAGE value="initial commit to work github account" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit to work github account" />
   </component>
 </project>
