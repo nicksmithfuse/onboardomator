@@ -115,9 +115,26 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
         # pop-up prompt to begin settings modification
         messagebox.showinfo("Begin mScanomator Settings",
                             f"You are about to modify the settings for {dealership_name}. Click OK to proceed to "
-                            f"calculation settings after this page has been adjusted and saved.")
+                            f"rate markup settings.")
 
-        # navigates to calculation settings page
+        # navigate to rate markup settings page
+        rate_markup_element = WebDriverWait(driver, 10).until(
+            ec.presence_of_element_located(
+                (By.XPATH, "//div[contains(@class, 'q-item__section') and contains(text(), 'Rate Markup')]"))
+        )
+        rate_markup_element.click()
+
+        # pop-up with the value of "Lower Max Rate" and instructions on completing page
+        if show_lower_max_rate:
+            messagebox.showinfo("Rate Markup Settings",
+                                "'Lower Max Rate' = 'Yes'.\n"
+                                "Check the boxes and click Save > hit OK to proceed to Calculation Settings.")
+        else:
+            messagebox.showinfo("Rate Markup Settings",
+                                "'Lower Max Rate' = 'No'.\n"
+                                "Ensure boxes aren't checked and click Save > hit OK to proceed to Calculation Settings.")
+
+        # navigate to calculation settings page
         calculation_settings_element = WebDriverWait(driver, 10).until(
             ec.presence_of_element_located(
                 (By.XPATH, "//div[contains(@class, 'q-item__section') and contains(text(), 'Calculation Settings')]"))
@@ -151,7 +168,7 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
         search_by_zip_input.send_keys(Keys.ENTER)
 
         # Wait for the "Override" button to be interactable and click it
-        override_button = WebDriverWait(driver, 10).until(
+        override_button = WebDriverWait(driver, 15).until(
             ec.element_to_be_clickable((By.ID, "btnPreview"))
         )
         override_button.click()
