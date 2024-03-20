@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="working step by step through the modify account function">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="separated functions out into the functions.py file">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/onboarding.csv" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding.csv" afterDir="false" />
     </list>
@@ -50,7 +51,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="google-sheets-integration" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -72,16 +73,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.account_modification.executor": "Run",
-    "Python.functions.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.account_modification.executor&quot;: &quot;Run&quot;,
+    &quot;Python.functions.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\rhann\PycharmProjects\mscanautomator\mscanFunctions" />
@@ -224,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710957648090</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="separated functions out into the functions.py file">
+      <option name="closed" value="true" />
+      <created>1710966957743</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1710966957743</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -241,6 +250,7 @@
     <MESSAGE value="initial commit to work github account" />
     <MESSAGE value="grouped all of the .csv reader shit into the get dealer info method, adjusted all of the arguments for automator, create account, etc." />
     <MESSAGE value="working step by step through the modify account function" />
-    <option name="LAST_COMMIT_MESSAGE" value="working step by step through the modify account function" />
+    <MESSAGE value="separated functions out into the functions.py file" />
+    <option name="LAST_COMMIT_MESSAGE" value="separated functions out into the functions.py file" />
   </component>
 </project>

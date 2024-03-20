@@ -5,10 +5,15 @@ import shutil
 import tkinter as tk
 
 from tkinter import messagebox, filedialog, simpledialog
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
+
+
 
 
 def select_onboarding_file():
@@ -94,6 +99,22 @@ def get_dealer_info():
     return (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
             include_registration_fees, zip_code, street_address, city_name, phone_number)
 
+def initialize_driver():
+    # Chrome driver > open up full screen to the login page
+    chrome_options = Options()
+    chrome_options.add_argument("--start-maximized")
+    driver = webdriver.Chrome(options=chrome_options)
+    login_url = "https://portal.mscanapi.com/#/Partner/Login"
+    driver.get(login_url)
+
+    # Wait for the page to finish loading
+    wait = WebDriverWait(driver, 10)
+    page_loaded = wait.until(
+        ec.presence_of_element_located((By.CSS_SELECTOR, "input[name='Partner ID']"))
+    )
+
+    return driver
+
 
 def login(driver):
     # logs into mscan
@@ -136,25 +157,12 @@ def automator(driver):
     (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
      include_registration_fees, zip_code, street_address, city_name, phone_number) = get_dealer_info()
 
-    user_choice = messagebox.askquestion(f"Account Action", f"Are you creating a NEW account for {dealership_name}?")
-    if user_choice == "yes":
-        print("User selected: Create an Account")
-        create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
-                       include_registration_fees, zip_code, street_address, city_name, phone_number)
-    else:
-        modify_settings = messagebox.askyesno("Modify Settings", f"Do you want to modify the account "
-                                                                 f"settings for {dealership_name}?")
-        if modify_settings:
-            print("User selected: Modify Settings")
-            modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code)
-            input()
-        else:
-            print("User cancelled modifying the account settings")
-            input()
+    # creates an account
+    create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name,
+                   zip_code, street_address, city_name, phone_number)
 
-
-def create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
-                   include_registration_fees, zip_code, street_address, city_name, phone_number):
+def create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name,
+                   zip_code, street_address, city_name, phone_number):
     # wait for the "Create an Account" button to be clickable, and then click it
     create_account_button = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "button.q-btn--outline.text-primary"))
@@ -170,16 +178,23 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     dealership_name_field = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Dealership Name']"))
     )
+    dealership_name_field.send_keys(dealership_name)
+
     # changed every field to interactable since random breaks
     street_field = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Street']"))
     )
+    street_field.send_keys(street_address)
+
     city_field = WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='City']"))
     )
+    city_field.send_keys(city_name)
+
     phone_field = WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Phone']"))
     )
+    phone_field.send_keys(phone_number)
 
     # select usa from dropdown here as the zip field needs to generate after that field is selected
     country_dropdown_icon = WebDriverWait(driver, 20).until(
@@ -223,30 +238,7 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     zip_field = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Zip']"))
     )
-
-    # opens up the onboarding file, checks fields in the file against fields on the webform and fills them in
-    with open('onboarding.csv', 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            if row[0].strip() == "Dealer Name":
-                dealership_name = row[1].strip()
-                dealership_name_field.send_keys(dealership_name)
-
-            elif row[0].strip() == "Street Address":
-                street_address = row[1].strip()
-                street_field.send_keys(street_address)
-
-            elif row[0].strip() == "City":
-                city_name = row[1].strip()
-                city_field.send_keys(city_name)
-
-            elif row[0].strip() == "Contact Phone Number (Contact 1)":
-                phone_number = row[1].strip()
-                phone_field.send_keys(phone_number)
-
-            elif row[0].strip() == "Zip Code":
-                zip_code = row[1].strip()
-                zip_field.send_keys(zip_code)
+    zip_field.send_keys(zip_code)
 
     # wait for the state dropdown element to be present after selecting USA, click and open it
     state_dropdown = WebDriverWait(driver, 20).until(
@@ -288,10 +280,6 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     homepage_url = "https://portal.mscanapi.com/#"
     driver.get(homepage_url)
     print("Navigated to the homepage")
-
-    # Call the automator function to repeat the process
-    automator(driver)
-
 
 def modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code):
     # this is the part of the script where we adjust the settings through user propmpts.
@@ -385,14 +373,12 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
                                 "Disable the Calculate Registration Fee setting and click Save Settings.")
 
         # Ask the user if they want to create another account or continue to FIA
-        user_choice = messagebox.askquestion("Next Step", "Are you ready to continue to FIA?")
+        user_choice = messagebox.showinfo("Continue", "Continue to FIA")
 
         if user_choice == 'yes':
             fia_login(driver)
         else:
-            homepage_url = "https://portal.mscanapi.com/#"
-            driver.get(homepage_url)
-            print("Navigated to the homepage for creating another account")
+            print("How has this happened?")
 
         return True  # Return True if the modification process is successful
 
