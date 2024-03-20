@@ -1,44 +1,6 @@
-import os
-import csv
-import shutil
-import tkinter as tk
-from tkinter import messagebox, filedialog, simpledialog
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from functions import get_dealer_info, login, automator
-
-def select_onboarding_file():
-    root = tk.Tk()
-    root.withdraw()  # Hide the main window
-
-    messagebox.showinfo("Automated Onboarding Process", "This is the automated onboarding process. Click OK to select the onboarding CSV file.")
-
-    file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
-
-    if file_path:
-        # Copy the selected file to the onboarding.csv file
-        shutil.copy2(file_path, "onboarding.csv")
-        messagebox.showinfo("File Selected", "Onboarding CSV file has been selected.")
-    else:
-        messagebox.showinfo("No File Selected", "No file was selected. The automated process will now exit.")
-        exit()
-
-def get_inventory_filename():
-    root = tk.Tk()
-    root.withdraw()  # Hide the main window
-
-    filename = simpledialog.askstring("Inventory Filename", "Enter the inventory filename:", parent=root)
-
-    if not filename:
-        messagebox.showinfo("No Filename Entered", "No filename was entered. The automated process will now exit.")
-        exit()
-
-    return filename
-
-def write_filename_to_csv(filename):
-    with open("onboarding.csv", "a", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Filename", filename])
+from functions import get_dealer_info, login, automator, select_onboarding_file, get_inventory_filename, write_filename_to_csv
 
 # Show the initial popup and select the onboarding CSV file
 select_onboarding_file()
@@ -60,10 +22,14 @@ driver = webdriver.Chrome(options=chrome_options)
 login_url = "https://portal.mscanapi.com/#/Partner/Login"
 driver.get(login_url)
 
-# Login to mscan
+# Login to mscan using stored variables on the users machine. the script will break here if these do not exist.
 login(driver)
 
-# The automator
+# The automator works through the mscan account creation. using a series of pop ups, the automator informs the user
+# what options to select, and auto-fills anything where it can.
+# TODO: review code with people who do this for a living to see where auto-fill can be improved
+# Next - the automator opens up FIA and logs in. This is where the code stops for now until the next update in FIA that
+# changes the UI.
 automator(driver)
 
 # Quit the driver

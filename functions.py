@@ -1,11 +1,48 @@
 import csv
 import time
 import os
-from tkinter import messagebox
+import shutil
+import tkinter as tk
+
+from tkinter import messagebox, filedialog, simpledialog
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
+
+
+def select_onboarding_file():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
+
+    if file_path:
+        # Copy the selected file to the onboarding.csv file
+        shutil.copy2(file_path, "onboarding.csv")
+        messagebox.showinfo("File Selected", "Onboarding CSV file has been selected.")
+    else:
+        messagebox.showinfo("No File Selected", "No file was selected. The automated process will now exit.")
+        exit()
+
+
+def get_inventory_filename():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    filename = simpledialog.askstring("Inventory Filename", "Enter the inventory filename:", parent=root)
+
+    if not filename:
+        messagebox.showinfo("No Filename Entered", "No filename was entered. The automated process will now exit.")
+        exit()
+
+    return filename
+
+
+def write_filename_to_csv(filename):
+    with open("onboarding.csv", "a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Filename", filename])
 
 
 def get_dealer_info():
@@ -114,6 +151,7 @@ def automator(driver):
         else:
             print("User cancelled modifying the account settings")
             input()
+
 
 def create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
                    include_registration_fees, zip_code, street_address, city_name, phone_number):
@@ -254,6 +292,7 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     # Call the automator function to repeat the process
     automator(driver)
 
+
 def modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code):
     # this is the part of the script where we adjust the settings through user propmpts.
     try:
@@ -360,6 +399,7 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
     except Exception as e:
         print(f"An error occurred during account modification: {str(e)}")
         return False  # Return False if an exception occurs during account modification
+
 
 def fia_login(driver):
     # Navigate to the login page
