@@ -35,6 +35,10 @@ def get_inventory_filename():
 
     return filename
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 def access_google_sheet(sheet_url):
     # Create a new Chrome driver instance for the Google Sheet
     sheet_driver = webdriver.Chrome()
@@ -43,16 +47,16 @@ def access_google_sheet(sheet_url):
     sheet_driver.get("https://accounts.google.com/signin")
 
     # Enter the email and click the "Next" button
-    email_field = sheet_driver.find_element_by_xpath("//input[@type='email']")
-    email_field.send_keys("your_email@example.com")  # Replace with your Google email
-    sheet_driver.find_element_by_xpath("//span[text()='Next']").click()
-
+    email_field = sheet_driver.find_element(By.XPATH, "//input[@type='email']")
+    email_field.send_keys(os.environ.get("GMAIL"))
+    sheet_driver.find_element(By.XPATH, "//span[text()='Next']").click()
+    time.sleep(10)
     # Wait for the password field to be visible and enter the password
     password_field = WebDriverWait(sheet_driver, 10).until(
-        ec.presence_of_element_located((By.XPATH, "//input[@type='password']"))
+        EC.presence_of_element_located((By.XPATH, "//input[@type='password']"))
     )
-    password_field.send_keys("your_password")  # Replace with your Google password
-    sheet_driver.find_element_by_xpath("//span[text()='Next']").click()
+    password_field.send_keys(os.environ.get("GMAIL_PASSWORD"))
+    sheet_driver.find_element(By.XPATH, "//span[text()='Next']").click()
 
     # Navigate to the Google Sheet URL
     sheet_driver.get(sheet_url)

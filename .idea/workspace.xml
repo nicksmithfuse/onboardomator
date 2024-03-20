@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="Features: &#10;user uploads the onboarding.csv file manually&#10;user enters inventory filename(s)">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="working on linking to google sheets rather than a .csv">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +75,7 @@
   "keyToString": {
     "Python.account_modification.executor": "Run",
     "Python.functions.executor": "Run",
-    "Python.main.executor": "Run",
+    "Python.main.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "google-sheets-integration"
@@ -232,7 +231,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710964878657</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="working on linking to google sheets rather than a .csv">
+      <option name="closed" value="true" />
+      <created>1710965782112</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1710965782112</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -250,6 +257,7 @@
     <MESSAGE value="grouped all of the .csv reader shit into the get dealer info method, adjusted all of the arguments for automator, create account, etc." />
     <MESSAGE value="working step by step through the modify account function" />
     <MESSAGE value="Features: &#10;user uploads the onboarding.csv file manually&#10;user enters inventory filename(s)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Features: &#10;user uploads the onboarding.csv file manually&#10;user enters inventory filename(s)" />
+    <MESSAGE value="working on linking to google sheets rather than a .csv" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on linking to google sheets rather than a .csv" />
   </component>
 </project>
