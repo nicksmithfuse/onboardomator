@@ -1,48 +1,48 @@
 Category,Information
 Dealership Information,
-Dealer Name,Karen Radley Volkswagen
-Dealer Parent Company,Radley Auto Group
-Street Address,14700 Richmond Hwy
-City,Woodbridge
-State,VA
-Zip Code,22191
+Dealer Name,Rapids Honda
+Dealer Parent Company,Sutton Auto Group
+Street Address,1950 Gateway Dr NW
+City,Coon Rapids
+State,MN
+Zip Code,55448
 Contacts,
-Contact First Name (Contact 1),Jose
-Contact Last Name (Contact 1),Cabrera
-Contact Email Address (Contact 1),josecabrera@radleyautogroup.com
-Contact Phone Number (Contact 1),7035079814
-General Manager,Yes
-GM First Name,-
-GM Email Address,-
-GM Phone Number,-
+Contact First Name (Contact 1),Demi
+Contact Last Name (Contact 1),Westfall
+Contact Email Address (Contact 1),demi@dkautoconsulting.com
+Contact Phone Number (Contact 1),4029849773
+General Manager,No
+GM First Name,Roy
+GM Email Address,rlacey@rapidshonda.com
+GM Phone Number,9522077800
 Website Information,
-Website Address,https://www.karenradleyvw.com/
-URL of New Specials Page,https://www.karenradleyvw.com/search/new-special-volkswagen-woodbridge-va/?cy=22191&tp=new&tp=special
-URL of Used Specials Page,https://www.karenradleyvw.com/search/special-used-woodbridge-va/?cy=22191&tp=special&tp=used
+Website Address,rapidshonda.com
+URL of New Specials Page,https://www.rapidshonda.com/new-vehicles/new-vehicle-specials/
+URL of Used Specials Page,https://www.rapidshonda.com/used-vehicles/pre-owned-vehicle-specials/
 CRM Information,
-CRM Provider,Elead
-CRM Lead Address,sales@karenradleyacuravw.edealerhub.com
+CRM Provider,VinSolutions
+CRM Lead Address,leads@rapidssales.com
 Vehicle Syndication and Images,
-Vehicle Syndicator Provider,VAuto
+Vehicle Syndicator Provider,VinSolutions
 Use vAuto Conquest,No
 Use Another Syndicator for Vehicle Images,No
 Pricing Information,
-Pricing Field Name (New),3VV2B7AXXRM006309
-Example VIN (New),27085
-Pricing Field Name (Used),3VVRB7AX9RM009667
-Example VIN (Used),26217
-Include Tax in Payment,No
-Include Registration Fees in Payment,No
-Doc Fee,$895
-Include Doc Fee in Payment,No
+Pricing Field Name (New),"""Rapids Honda Price"""
+Example VIN (New),2HGFE2F56RH544541
+Pricing Field Name (Used),"""Rapids Honda Price"""
+Example VIN (Used),19XFC1F3XME008872
+Include Tax in Payment,"No (as of Feb 22, 08:39 AM)"
+Include Registration Fees in Payment,"No (as of Feb 22, 08:39 AM)"
+Doc Fee,"$$ (as of Feb 22, 08:40 AM)"
+Include Doc Fee in Payment,"No (as of Feb 22, 08:39 AM)"
 Lease and Finance Information,
-Lease Lenders,VW Credit
-Finance Lenders,VW Credit
-Offers to Display,10% Down Lease
+Lease Lenders,"Honda Financial, US Bank"
+Finance Lenders,"Capital One, Royal Credit Union, Spire Credit Union, US Bank, PNC Bank, Chase"
+Offers to Display,"Sign and Drive, First Payment & Fees, Monthly Payment Finance Special, Finance APR Special"
 Minimum Discount Amount to Display,-
 Default Mileage for Lease Specials,10000
-Lease Special Markups,0.0004
-Finance Special Markups,0
-Show Programs with Lower Max Rate,Yes
-Models to Exclude from Specials,Golf R
-Finance Lenders,Unpublished
+Lease Special Markups,-
+Finance Special Markups,-
+Show Programs with Lower Max Rate,-
+Models to Exclude from Specials,None
+Finance Lenders,UnpublishedFilename,inventory.csv
