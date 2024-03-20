@@ -17,4 +17,5 @@ driver.get(login_url)
 login(driver)
 
 # the automator-or
-automator(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate, include_registration_fees, zip_code)
+automator(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
+          include_registration_fees, zip_code)
