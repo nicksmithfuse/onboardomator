@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 def get_dealer_info():
     # Read the dealership information from the "onboarding.csv" file
     dealership_name = ""
@@ -56,6 +57,7 @@ def get_dealer_info():
     return (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
             include_registration_fees, zip_code, street_address, city_name, phone_number)
 
+
 def login(driver):
     # logs into mscan
     # locally stored username and password hashtag security hashtag we did it
@@ -91,96 +93,27 @@ def login(driver):
         print(f"An error occurred during login: {str(e)}")
         return False  # Return False if an exception occurs during login
 
-def modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code):
-    # this is the part of the script where we adjust the settings through user propmpts.
-    try:
-        # find the search input box and wait for it to be interactable, enter the dealership name variable and simulate
-        # the enter key being pressed. then, because reasons, wait 2 seconds otherwise it breaks.
-        search_input = WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Search in the data grid']"))
-        )
-        search_input.send_keys(dealership_name)
-        search_input.send_keys(Keys.ENTER)
-        time.sleep(2)
 
-        # entering the dealership name changes data table to only show dealership, targets this as <tr>, and clicks
-        # on it.
-        target_row_xpath = f"//tr[@class='dx-row dx-data-row dx-column-lines']"
-        target_row = WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located((By.XPATH, target_row_xpath))
-        )
-        time.sleep(1)
-        target_row.click()
+def automator(driver):
+    # Get the dealership information from the CSV file
+    (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
+     include_registration_fees, zip_code, street_address, city_name, phone_number) = get_dealer_info()
 
-        # pop-up prompt to begin settings modification
-        messagebox.showinfo("Begin mScanomator Settings",
-                            f"You are about to modify the settings for {dealership_name}. Click OK to proceed to "
-                            f"rate markup settings.")
-
-        # navigate to rate markup settings page
-        rate_markup_element = WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located(
-                (By.XPATH, "//div[contains(@class, 'q-item__section') and contains(text(), 'Rate Markup')]"))
-        )
-        rate_markup_element.click()
-
-        # pop-up with the value of "Lower Max Rate" and instructions on completing page
-        if show_lower_max_rate:
-            messagebox.showinfo("Rate Markup Settings",
-                                "'Lower Max Rate' = 'Yes'.\n"
-                                "Check the boxes and click Save > hit OK to proceed to Calculation Settings.")
+    user_choice = messagebox.askquestion(f"Account Action", f"Are you creating a NEW account for {dealership_name}?")
+    if user_choice == "yes":
+        print("User selected: Create an Account")
+        create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
+                       include_registration_fees, zip_code, street_address, city_name, phone_number)
+    else:
+        modify_settings = messagebox.askyesno("Modify Settings", f"Do you want to modify the account "
+                                                                 f"settings for {dealership_name}?")
+        if modify_settings:
+            print("User selected: Modify Settings")
+            modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code)
+            input()
         else:
-            messagebox.showinfo("Rate Markup Settings",
-                                "'Lower Max Rate' = 'No'.\n"
-                                "Ensure boxes aren't checked and click Save > hit OK to proceed to Calculation Settings.")
-
-        # navigate to calculation settings page
-        calculation_settings_element = WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located(
-                (By.XPATH, "//div[contains(@class, 'q-item__section') and contains(text(), 'Calculation Settings')]"))
-        )
-        calculation_settings_element.click()
-
-        # pop-up with the value of "Include Registration Fees in Payment" and instructions on completing page
-        if include_registration_fees:
-            messagebox.showinfo("Calculation Settings",
-                                "'Include Registration Fees in Payment' = 'Yes'.\n"
-                                "Turn on Calculate Reg > click Save > hit OK to proceed to Market Specific Settings.")
-        else:
-            messagebox.showinfo("Calculation Settings",
-                                "'Include Registration Fees in Payment' = 'No'.\n"
-                                "Ensure Calculate Reg is disabled > click Save > hit OK to proceed to Market Specific Settings.")
-
-        # goes to the market specific settings
-        market_specific_settings_element = WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located(
-                (By.XPATH,
-                 "//div[contains(@class, 'q-item__section') and contains(text(), 'Market Specific Settings')]"))
-        )
-        market_specific_settings_element.click()
-
-        # find the "Search by Zip" input field on the page and wait for it to be clickable, enter zip code into field,
-        # hit enter
-        search_by_zip_input = WebDriverWait(driver, 10).until(
-            ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Search by Zip']"))
-        )
-        search_by_zip_input.send_keys(zip_code)
-        search_by_zip_input.send_keys(Keys.ENTER)
-
-        # Wait for the "Override" button to be interactable and click it
-        override_button = WebDriverWait(driver, 15).until(
-            ec.element_to_be_clickable((By.ID, "btnPreview"))
-        )
-        override_button.click()
-        print("Clicked the Override button")
-
-        input()
-        return True  # Return True if the modification process is successful
-
-    except Exception as e:
-        print(f"An error occurred during account modification: {str(e)}")
-        return False  # Return False if an exception occurs during account modification
-
+            print("User cancelled modifying the account settings")
+            input()
 
 def create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
                    include_registration_fees, zip_code, street_address, city_name, phone_number):
@@ -321,23 +254,137 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     # Call the automator function to repeat the process
     automator(driver)
 
+def modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code):
+    # this is the part of the script where we adjust the settings through user propmpts.
+    try:
+        # find the search input box and wait for it to be interactable, enter the dealership name variable and simulate
+        # the enter key being pressed. then, because reasons, wait 2 seconds otherwise it breaks.
+        search_input = WebDriverWait(driver, 10).until(
+            ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Search in the data grid']"))
+        )
+        search_input.send_keys(dealership_name)
+        search_input.send_keys(Keys.ENTER)
+        time.sleep(2)
 
-def automator(driver):
-    # Get the dealership information from the CSV file
-    (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
-     include_registration_fees, zip_code, street_address, city_name, phone_number) = get_dealer_info()
+        # entering the dealership name changes data table to only show dealership, targets this as <tr>, and clicks
+        # on it.
+        target_row_xpath = f"//tr[@class='dx-row dx-data-row dx-column-lines']"
+        target_row = WebDriverWait(driver, 10).until(
+            ec.presence_of_element_located((By.XPATH, target_row_xpath))
+        )
+        time.sleep(1)
+        target_row.click()
 
-    user_choice = messagebox.askquestion(f"Account Action", f"Are you creating a NEW account for {dealership_name}?")
-    if user_choice == "yes":
-        print("User selected: Create an Account")
-        create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name, show_lower_max_rate,
-                       include_registration_fees, zip_code, street_address, city_name, phone_number)
-    else:
-        modify_settings = messagebox.askyesno("Modify Settings", f"Do you want to modify the account "
-                                                                 f"settings for {dealership_name}?")
-        if modify_settings:
-            print("User selected: Modify Settings")
-            modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code)
+        # pop-up prompt to begin settings modification
+        messagebox.showinfo("Begin mScanomator Settings",
+                            f"You are about to modify the settings for {dealership_name}. Click OK to proceed to "
+                            f"rate markup settings.")
+
+        # navigate to rate markup settings page
+        rate_markup_element = WebDriverWait(driver, 10).until(
+            ec.presence_of_element_located(
+                (By.XPATH, "//div[contains(@class, 'q-item__section') and contains(text(), 'Rate Markup')]"))
+        )
+        rate_markup_element.click()
+
+        # pop-up with the value of "Lower Max Rate" and instructions on completing page
+        if show_lower_max_rate:
+            messagebox.showinfo("Rate Markup Settings",
+                                "'Lower Max Rate' = 'Yes'.\n"
+                                "Check the boxes and click Save > hit OK to proceed to Calculation Settings.")
         else:
-            print("User cancelled modifying the account settings")
-            input()
+            messagebox.showinfo("Rate Markup Settings",
+                                "'Lower Max Rate' = 'No'.\n"
+                                "Ensure boxes aren't checked and click Save > hit OK to proceed to Calculation Settings.")
+
+        # navigate to calculation settings page
+        calculation_settings_element = WebDriverWait(driver, 10).until(
+            ec.presence_of_element_located(
+                (By.XPATH, "//div[contains(@class, 'q-item__section') and contains(text(), 'Calculation Settings')]"))
+        )
+        calculation_settings_element.click()
+
+        # pop-up with the value of "Include Registration Fees in Payment" and instructions on completing page
+        if include_registration_fees:
+            messagebox.showinfo("Calculation Settings",
+                                "'Include Registration Fees in Payment' = 'Yes'.\n"
+                                "Turn on Calculate Reg > click Save > hit OK to proceed to Market Specific Settings.")
+        else:
+            messagebox.showinfo("Calculation Settings",
+                                "'Include Registration Fees in Payment' = 'No'.\n"
+                                "Ensure Calculate Reg is disabled > click Save > hit OK to proceed to Market Specific Settings.")
+
+        # goes to the market specific settings
+        market_specific_settings_element = WebDriverWait(driver, 10).until(
+            ec.presence_of_element_located(
+                (By.XPATH,
+                 "//div[contains(@class, 'q-item__section') and contains(text(), 'Market Specific Settings')]"))
+        )
+        market_specific_settings_element.click()
+
+        # find the "Search by Zip" input field on the page and wait for it to be clickable, enter zip code into field,
+        # hit enter
+        search_by_zip_input = WebDriverWait(driver, 10).until(
+            ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Search by Zip']"))
+        )
+        search_by_zip_input.send_keys(zip_code)
+        search_by_zip_input.send_keys(Keys.ENTER)
+
+        # Wait for any loading screen to disappear
+        WebDriverWait(driver, 10).until_not(
+            ec.presence_of_element_located((By.CSS_SELECTOR, "div.q-loading__backdrop"))
+        )
+
+        # Display a pop-up with the value of "Calculate Registration Fee" and instructions
+        if include_registration_fees:
+            messagebox.showinfo("Calculate Registration Fee",
+                                "'Calculate Registration Fee' = 'Yes'.\n"
+                                "Turn on the Calculate Registration Fee setting and click Save Settings.")
+        else:
+            messagebox.showinfo("Calculate Registration Fee",
+                                "'Calculate Registration Fee' = 'No'.\n"
+                                "Disable the Calculate Registration Fee setting and click Save Settings.")
+
+        # Ask the user if they want to create another account or continue to FIA
+        user_choice = messagebox.askquestion("Next Step", "Are you ready to continue to FIA?")
+
+        if user_choice == 'yes':
+            fia_login(driver)
+        else:
+            homepage_url = "https://portal.mscanapi.com/#"
+            driver.get(homepage_url)
+            print("Navigated to the homepage for creating another account")
+
+        return True  # Return True if the modification process is successful
+
+    except Exception as e:
+        print(f"An error occurred during account modification: {str(e)}")
+        return False  # Return False if an exception occurs during account modification
+
+def fia_login(driver):
+    # Navigate to the login page
+    login_url = "https://finance-intelligence-admin.fuseautotech.com/Identity/Account/Login"
+    driver.get(login_url)
+
+    # Get the email and password environment variables
+    fia_email = os.environ.get("fia_email")
+    fia_password = os.environ.get("fia_password")
+
+    # Wait for the email and password fields to be interactable
+    wait = WebDriverWait(driver, 10)
+    email_field = wait.until(ec.element_to_be_clickable((By.ID, "Input_Email")))
+    password_field = wait.until(ec.element_to_be_clickable((By.ID, "Input_Password")))
+
+    # Enter the email and password
+    email_field.send_keys(fia_email)
+    password_field.send_keys(fia_password)
+
+    # Wait for the login button to be clickable
+    login_button = wait.until(ec.element_to_be_clickable((By.CSS_SELECTOR, "button.btn.btn-primary")))
+
+    # Click the login button
+    login_button.click()
+
+    input("Press Enter to continue...")
+    # Close the browser
+    driver.quit()

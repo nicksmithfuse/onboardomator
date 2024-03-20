@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="grouped all of the .csv reader shit into the get dealer info method, adjusted all of the arguments for automator, create account, etc.">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="working step by step through the modify account function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710948649993</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="working step by step through the modify account function">
+      <option name="closed" value="true" />
+      <created>1710957648090</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1710957648090</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -230,6 +239,7 @@
     <MESSAGE value="Account creation function complete!&#10;after login the user is prompted y/n on if they want to create an account or modify an existing account&#10;separated out mscan login, dealer info, and create account code into the functions.py file&#10;began the modify account process in the functions.py file" />
     <MESSAGE value="initial commit to work github account" />
     <MESSAGE value="grouped all of the .csv reader shit into the get dealer info method, adjusted all of the arguments for automator, create account, etc." />
-    <option name="LAST_COMMIT_MESSAGE" value="grouped all of the .csv reader shit into the get dealer info method, adjusted all of the arguments for automator, create account, etc." />
+    <MESSAGE value="working step by step through the modify account function" />
+    <option name="LAST_COMMIT_MESSAGE" value="working step by step through the modify account function" />
   </component>
 </project>
