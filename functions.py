@@ -1,25 +1,65 @@
 import csv
 import time
 import os
-from tkinter import messagebox
+import tkinter as tk
+
+from tkinter import messagebox, filedialog, simpledialog
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium import webdriver
 
 
-def get_dealer_info():
-    # Read the dealership information from the "onboarding.csv" file
-    dealership_name = ""
-    dealership_state_abbr = ""
-    dealership_state_full = ""
-    show_lower_max_rate = False
-    include_registration_fees = False
-    zip_code = ""
-    street_address = ""
-    city_name = ""
-    phone_number = ""
+def select_onboarding_file():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
 
+    sheet_url = simpledialog.askstring("Google Sheet URL", "Enter the Google Sheet URL:", parent=root)
+
+    if not sheet_url:
+        messagebox.showinfo("No URL Entered", "No Google Sheet URL was entered. The automated process will now exit.")
+        exit()
+
+    return sheet_url
+
+def get_inventory_filename():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    filename = simpledialog.askstring("Inventory Filename", "Enter the inventory filename:", parent=root)
+
+    if not filename:
+        messagebox.showinfo("No Filename Entered", "No filename was entered. The automated process will now exit.")
+        exit()
+
+    return filename
+
+def access_google_sheet(sheet_url):
+    # Create a new Chrome driver instance for the Google Sheet
+    sheet_driver = webdriver.Chrome()
+
+    # Navigate to the Google login page
+    sheet_driver.get("https://accounts.google.com/signin")
+
+    # Enter the email and click the "Next" button
+    email_field = sheet_driver.find_element_by_xpath("//input[@type='email']")
+    email_field.send_keys("your_email@example.com")  # Replace with your Google email
+    sheet_driver.find_element_by_xpath("//span[text()='Next']").click()
+
+    # Wait for the password field to be visible and enter the password
+    password_field = WebDriverWait(sheet_driver, 10).until(
+        ec.presence_of_element_located((By.XPATH, "//input[@type='password']"))
+    )
+    password_field.send_keys("your_password")  # Replace with your Google password
+    sheet_driver.find_element_by_xpath("//span[text()='Next']").click()
+
+    # Navigate to the Google Sheet URL
+    sheet_driver.get(sheet_url)
+
+    return sheet_driver
+
+def get_dealer_info(sheet_driver):
     state_map = {
         'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
         'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
@@ -33,30 +73,21 @@ def get_dealer_info():
         'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming'
     }
 
-    with open('onboarding.csv', 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            if row[0].strip() == "Dealer Name":
-                dealership_name = row[1].strip()
-            elif row[0].strip() == "State":
-                dealership_state_abbr = row[1].strip()
-                dealership_state_full = state_map.get(dealership_state_abbr, '')
-            elif row[0].strip() == "Show Programs with Lower Max Rate":
-                show_lower_max_rate = row[1].strip().lower() == "yes"
-            elif row[0].strip() == "Include Registration Fees in Payment":
-                include_registration_fees = row[1].strip().lower() == "yes"
-            elif row[0].strip() == "Zip Code":
-                zip_code = row[1].strip()
-            elif row[0].strip() == "Street Address":
-                street_address = row[1].strip()
-            elif row[0].strip() == "City":
-                city_name = row[1].strip()
-            elif row[0].strip() == "Contact Phone Number (Contact 1)":
-                phone_number = row[1].strip()
+    dealership_name = sheet_driver.find_element_by_xpath("//span[text()='Dealer Name']/following-sibling::span").text
+    dealership_state_abbr = sheet_driver.find_element_by_xpath("//span[text()='State']/following-sibling::span").text
+    dealership_state_full = state_map.get(dealership_state_abbr, '')
+    show_lower_max_rate = sheet_driver.find_element_by_xpath(
+        "//span[text()='Show Programs with Lower Max Rate']/following-sibling::span").text.lower() == "yes"
+    include_registration_fees = sheet_driver.find_element_by_xpath(
+        "//span[text()='Include Registration Fees in Payment']/following-sibling::span").text.lower() == "yes"
+    zip_code = sheet_driver.find_element_by_xpath("//span[text()='Zip Code']/following-sibling::span").text
+    street_address = sheet_driver.find_element_by_xpath("//span[text()='Street Address']/following-sibling::span").text
+    city_name = sheet_driver.find_element_by_xpath("//span[text()='City']/following-sibling::span").text
+    phone_number = sheet_driver.find_element_by_xpath(
+        "//span[text()='Contact Phone Number (Contact 1)']/following-sibling::span").text
 
     return (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
             include_registration_fees, zip_code, street_address, city_name, phone_number)
-
 
 def login(driver):
     # logs into mscan

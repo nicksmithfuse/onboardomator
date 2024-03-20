@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="working step by step through the modify account function">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="Features: &#10;user uploads the onboarding.csv file manually&#10;user enters inventory filename(s)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onboarding.csv" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +79,7 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "google-sheets-integration"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -224,7 +224,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710957648090</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Features: &#10;user uploads the onboarding.csv file manually&#10;user enters inventory filename(s)">
+      <option name="closed" value="true" />
+      <created>1710964878657</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1710964878657</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -241,6 +249,7 @@
     <MESSAGE value="initial commit to work github account" />
     <MESSAGE value="grouped all of the .csv reader shit into the get dealer info method, adjusted all of the arguments for automator, create account, etc." />
     <MESSAGE value="working step by step through the modify account function" />
-    <option name="LAST_COMMIT_MESSAGE" value="working step by step through the modify account function" />
+    <MESSAGE value="Features: &#10;user uploads the onboarding.csv file manually&#10;user enters inventory filename(s)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Features: &#10;user uploads the onboarding.csv file manually&#10;user enters inventory filename(s)" />
   </component>
 </project>
