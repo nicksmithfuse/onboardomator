@@ -4,8 +4,6 @@ This application pulls these credentials to login to the mscan partner portal 2.
 
 fills in create account information from onboarding
 
-takes user back to home page
+takes user back to home page and prompts the user through the full settings process
 
-prompts to create/modify again
-
-modify account works up until zip code override in market specific settings
+opens up FIA and logs in
