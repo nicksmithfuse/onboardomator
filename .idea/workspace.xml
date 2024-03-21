@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="separated functions out into the functions.py file">
+    <list default="true" id="64757950-94ed-4942-a2eb-ad669d0134c3" name="Changes" comment="separated functions out into the functions.py file. cleaned up main.py file in more of a linear script instead of a goof loop like i had it.&#10;entered some time in between opening chrome and logging in&#10;removed user prompts for create or modify account, user is only ever here to create a new account.&#10;tested functionality from uploading a csv, to FIA and everything works.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -233,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710966957743</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="separated functions out into the functions.py file. cleaned up main.py file in more of a linear script instead of a goof loop like i had it.&#10;entered some time in between opening chrome and logging in&#10;removed user prompts for create or modify account, user is only ever here to create a new account.&#10;tested functionality from uploading a csv, to FIA and everything works.">
+      <option name="closed" value="true" />
+      <created>1710969816971</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1710969816971</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -251,6 +259,7 @@
     <MESSAGE value="grouped all of the .csv reader shit into the get dealer info method, adjusted all of the arguments for automator, create account, etc." />
     <MESSAGE value="working step by step through the modify account function" />
     <MESSAGE value="separated functions out into the functions.py file" />
-    <option name="LAST_COMMIT_MESSAGE" value="separated functions out into the functions.py file" />
+    <MESSAGE value="separated functions out into the functions.py file. cleaned up main.py file in more of a linear script instead of a goof loop like i had it.&#10;entered some time in between opening chrome and logging in&#10;removed user prompts for create or modify account, user is only ever here to create a new account.&#10;tested functionality from uploading a csv, to FIA and everything works." />
+    <option name="LAST_COMMIT_MESSAGE" value="separated functions out into the functions.py file. cleaned up main.py file in more of a linear script instead of a goof loop like i had it.&#10;entered some time in between opening chrome and logging in&#10;removed user prompts for create or modify account, user is only ever here to create a new account.&#10;tested functionality from uploading a csv, to FIA and everything works." />
   </component>
 </project>

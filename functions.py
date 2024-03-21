@@ -14,27 +14,46 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-
-
 def select_onboarding_file():
-    root = tk.Tk()
-    root.withdraw()  # Hide the main window
+    while True:
+        root = tk.Tk()
+        root.withdraw()
+        messagebox.showinfo("Automated Onboarding Process", "Welcome to the onboarding process. "
+                                                            "Click OK to select the onboarding CSV file.")
 
-    file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
+        file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
 
-    if file_path:
-        # Copy the selected file to the onboarding.csv file
-        shutil.copy2(file_path, "onboarding.csv")
-        messagebox.showinfo("File Selected", "Onboarding CSV file has been selected.")
-    else:
-        messagebox.showinfo("No File Selected", "No file was selected. The automated process will now exit.")
-        exit()
+        if file_path:
+            # sets the required fields, checks the field values and asks the user to verify file and try again if
+            # the required info is not found to work through the process
+            required_fields = ["Dealer Name", "Street Address", "City", "State", "Zip Code", "Contact Phone Number (Contact 1)"]
+            with open(file_path, 'r') as file:
+                reader = csv.reader(file)
+                data = {row[0]: row[1] for row in reader}
+
+                missing_fields = [field for field in required_fields if field not in data or not data[field].strip()]
+
+                if missing_fields:
+                    message = "The selected file is missing the following required fields or values:\n\n"
+                    message += "\n".join(missing_fields)
+                    messagebox.showinfo("Invalid File", message + "\n\nPlease check the file and try again.")
+                    continue
+
+            # utilizing whatever shutil is so that we copy the file from the users computer, previous version just
+            # moved it so the user could not actually open the file anymore to look at it
+            shutil.copy2(file_path, "onboarding.csv")
+            messagebox.showinfo("File Selected", "Onboarding CSV file has been selected.")
+            break
+        else:
+            messagebox.showinfo("No File Selected", "No file was selected. The automated process will now exit.")
+            exit()
 
 
 def get_inventory_filename():
+    # pop up that asks the user for the filename.
+    # TODO: make this a csv uploader and just strip the filename so that the user is forced to provide a real filename
     root = tk.Tk()
-    root.withdraw()  # Hide the main window
-
+    root.withdraw()
     filename = simpledialog.askstring("Inventory Filename", "Enter the inventory filename:", parent=root)
 
     if not filename:
@@ -44,6 +63,7 @@ def get_inventory_filename():
     return filename
 
 
+# I don't think this is actually working or necessary. filename can just be saved as a variable to be used during FIA
 def write_filename_to_csv(filename):
     with open("onboarding.csv", "a", newline="") as file:
         writer = csv.writer(file)
@@ -51,7 +71,8 @@ def write_filename_to_csv(filename):
 
 
 def get_dealer_info():
-    # Read the dealership information from the "onboarding.csv" file
+    # establishes variables for data from the file, assigns from onboarding.csv and returned for other functions
+    # TODO: add anything here that is needed for FIA or DP so that there isn't just csv readers everywhere
     dealership_name = ""
     dealership_state_abbr = ""
     dealership_state_full = ""
@@ -61,7 +82,7 @@ def get_dealer_info():
     street_address = ""
     city_name = ""
     phone_number = ""
-
+    # this is necessary for the dealership abbreviation to state fullname conversion later in the code to work
     state_map = {
         'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
         'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
@@ -74,7 +95,7 @@ def get_dealer_info():
         'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
         'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming'
     }
-
+    # reads file and assigns the values to variables
     with open('onboarding.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
@@ -98,6 +119,7 @@ def get_dealer_info():
 
     return (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
             include_registration_fees, zip_code, street_address, city_name, phone_number)
+
 
 def initialize_driver():
     # Chrome driver > open up full screen to the login page
@@ -152,14 +174,16 @@ def login(driver):
         return False  # Return False if an exception occurs during login
 
 
+# this is probably redundant, but it was my first idea on how to run through the process.
 def automator(driver):
-    # Get the dealership information from the CSV file
+    # get the dealership information from the CSV file
     (dealership_name, dealership_state_abbr, dealership_state_full, show_lower_max_rate,
      include_registration_fees, zip_code, street_address, city_name, phone_number) = get_dealer_info()
 
     # creates an account
     create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name,
                    zip_code, street_address, city_name, phone_number)
+
 
 def create_account(driver, dealership_state_abbr, dealership_state_full, dealership_name,
                    zip_code, street_address, city_name, phone_number):
@@ -169,18 +193,20 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     )
     create_account_button.click()
 
-    # waits for loading screen to go away - script kept breaking and this works
+    # waits for loading screen to go away - SORRY YUVAL :(
     WebDriverWait(driver, 10).until_not(
         ec.presence_of_element_located((By.CSS_SELECTOR, "div.q-loading__backdrop"))
     )
 
-    # "Dealership Name" input field to be interactable
+    # there doesnt seem to be any rhyme or reason on what works with locateable and what works with clickable
+    # below code works through the input form on the page, filling in information from the CSV and searching in
+    # dropdowns to make the connections on what to click.
+    # DO NOT MAKE ANY ADJUSTMENTS BELOW THIS POINT OR CREATE ACCOUNT WILL EXPLODE
     dealership_name_field = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Dealership Name']"))
     )
     dealership_name_field.send_keys(dealership_name)
 
-    # changed every field to interactable since random breaks
     street_field = WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "input[aria-label='Street']"))
     )
@@ -196,11 +222,7 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
     )
     phone_field.send_keys(phone_number)
 
-    # select usa from dropdown here as the zip field needs to generate after that field is selected
-    country_dropdown_icon = WebDriverWait(driver, 20).until(
-        ec.presence_of_element_located((By.CSS_SELECTOR, "i.q-icon.q-select__dropdown-icon"))
-    )
-    # finds and opens up the country drop down, finds USA and clicks on it
+    # select usa from dropdown here as the zip field needs to GENERATE on screen after that country is selected
     country_dropdown = WebDriverWait(driver, 20).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Country']"))
     )
@@ -259,7 +281,7 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
             break
 
     # down below, finds the full state name based on the state abbreviation. currently the user needs to scroll
-    # through the list to 'find' the state (if it is not immediately visibile on the page) but i don't have any
+    # through the list to 'find' the state (if it is not immediately visible on the page) but i don't have any
     # more ideas here
     state_subscription_checkbox = WebDriverWait(driver, 20).until(
         ec.element_to_be_clickable((
@@ -273,37 +295,51 @@ def create_account(driver, dealership_state_abbr, dealership_state_full, dealers
 
     # you did it pop up
     messagebox.showinfo("Account Creation",
-                        "Please fill out the OEM field and review all information before clicking 'Save' Click ok to "
-                        "return to the homepage.")
+                        "Please fill out the Subscribed Makes field and review all information before clicking"
+                        " 'Save' Click ok to return to the homepage.")
 
     # send the user back to the homepage
     homepage_url = "https://portal.mscanapi.com/#"
     driver.get(homepage_url)
     print("Navigated to the homepage")
 
+
 def modify_account(driver, dealership_name, show_lower_max_rate, include_registration_fees, zip_code):
-    # this is the part of the script where we adjust the settings through user propmpts.
+    # this is the part of the script where we adjust the settings through user prompts.
     try:
+
+        # Wait for any loading screen to disappear
+        WebDriverWait(driver, 10).until_not(
+            ec.presence_of_element_located((By.CSS_SELECTOR, "div.q-loading__backdrop"))
+        )
+
         # find the search input box and wait for it to be interactable, enter the dealership name variable and simulate
         # the enter key being pressed. then, because reasons, wait 2 seconds otherwise it breaks.
         search_input = WebDriverWait(driver, 10).until(
             ec.presence_of_element_located((By.CSS_SELECTOR, "input[aria-label='Search in the data grid']"))
         )
+
+        # TODO: figure out a better solution than time.sleep()
+        # there's not a loading screen here to check against
+        # several errors at this point in the script, time.sleep(2) is working for now
         search_input.send_keys(dealership_name)
+        time.sleep(2)
         search_input.send_keys(Keys.ENTER)
         time.sleep(2)
+
+        # code breaks here without time.sleep() idk what im doing
 
         # entering the dealership name changes data table to only show dealership, targets this as <tr>, and clicks
         # on it.
         target_row_xpath = f"//tr[@class='dx-row dx-data-row dx-column-lines']"
         target_row = WebDriverWait(driver, 10).until(
-            ec.presence_of_element_located((By.XPATH, target_row_xpath))
+            ec.element_to_be_clickable((By.XPATH, target_row_xpath))
         )
         time.sleep(1)
         target_row.click()
 
         # pop-up prompt to begin settings modification
-        messagebox.showinfo("Begin mScanomator Settings",
+        messagebox.showinfo("Begin mScanomator",
                             f"You are about to modify the settings for {dealership_name}. Click OK to proceed to "
                             f"rate markup settings.")
 
@@ -341,7 +377,7 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
                                 "'Include Registration Fees in Payment' = 'No'.\n"
                                 "Ensure Calculate Reg is disabled > click Save > hit OK to proceed to Market Specific Settings.")
 
-        # goes to the market specific settings
+        # goes to the market specific settings page
         market_specific_settings_element = WebDriverWait(driver, 10).until(
             ec.presence_of_element_located(
                 (By.XPATH,
@@ -372,13 +408,14 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
                                 "'Calculate Registration Fee' = 'No'.\n"
                                 "Disable the Calculate Registration Fee setting and click Save Settings.")
 
-        # Ask the user if they want to create another account or continue to FIA
+        # TODO: make the if statement here make sense.
+        # previous version allowed the user to loop back through to create more than one account, but that's stupid.
         user_choice = messagebox.showinfo("Continue", "Continue to FIA")
 
         if user_choice == 'yes':
             fia_login(driver)
         else:
-            print("How has this happened?")
+            fia_login(driver)
 
         return True  # Return True if the modification process is successful
 
@@ -388,7 +425,7 @@ def modify_account(driver, dealership_name, show_lower_max_rate, include_registr
 
 
 def fia_login(driver):
-    # Navigate to the login page
+    # takes the user to the FIA login page - this will be adjusted to the staging URL until next release
     login_url = "https://finance-intelligence-admin.fuseautotech.com/Identity/Account/Login"
     driver.get(login_url)
 
@@ -405,12 +442,11 @@ def fia_login(driver):
     email_field.send_keys(fia_email)
     password_field.send_keys(fia_password)
 
-    # Wait for the login button to be clickable
+    # Wait for the login button to be clickable and click
     login_button = wait.until(ec.element_to_be_clickable((By.CSS_SELECTOR, "button.btn.btn-primary")))
-
-    # Click the login button
     login_button.click()
 
-    input("Press Enter to continue...")
-    # Close the browser
+    # keeps browser open
+    input()
+    # unreachable but it's here just in case chrome driver becomes self aware
     driver.quit()
